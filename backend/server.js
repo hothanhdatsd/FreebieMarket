@@ -26,6 +26,7 @@ if (process.env.NODE_ENV === "development") {
 const __dirname = path.resolve();
 const fileName = __dirname + "/backend/excel.xlsx";
 app.use(express.json());
+console.log();
 
 app.get("/", (req, res) => {
   res.send("API is on running...");
