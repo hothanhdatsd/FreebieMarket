@@ -3,7 +3,7 @@ import Order from "../models/orderModel.js";
 
 //POST one order
 // POST /api/orders
-const addOrderItems = asyncHandler(async(req, res) => {
+const addOrderItems = asyncHandler(async (req, res) => {
     const {
         orderItems,
         shippingAddress,
@@ -35,7 +35,7 @@ const addOrderItems = asyncHandler(async(req, res) => {
 
 //GET order by ID
 //GET /api/orders/:id
-const getOrderByID = asyncHandler(async(req, res) => {
+const getOrderByID = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id).populate(
         "user",
         "name email"
@@ -50,7 +50,7 @@ const getOrderByID = asyncHandler(async(req, res) => {
 
 //GET update order to paid
 //GET /api/orders/:id/pay
-const updateOrderToPaid = asyncHandler(async(req, res) => {
+const updateOrderToPaid = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {
         order.isPaid = true;
@@ -70,7 +70,7 @@ const updateOrderToPaid = asyncHandler(async(req, res) => {
     }
 });
 
-const updateOrderToDelivered = asyncHandler(async(req, res) => {
+const updateOrderToDelivered = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
 
     if (order) {
@@ -88,7 +88,7 @@ const updateOrderToDelivered = asyncHandler(async(req, res) => {
 
 //GET user order
 //GET /api/orders/myorders
-const getMyOrders = asyncHandler(async(req, res) => {
+const getMyOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find({
         user: req.user._id,
     });
@@ -98,7 +98,7 @@ const getMyOrders = asyncHandler(async(req, res) => {
 //ADMIN
 //GET  orders
 //GET /api/orders/myorders
-const getOrders = asyncHandler(async(req, res) => {
+const getOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find().populate("user", "id name");
     res.json(orders);
 });

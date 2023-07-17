@@ -19,14 +19,14 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extends: true }));
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 const __dirname = path.resolve();
 const fileName = __dirname + "/backend/excel.xlsx";
-app.use(express.json());
-console.log();
 
 app.get("/", (req, res) => {
   res.send("API is on running...");

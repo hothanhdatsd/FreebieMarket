@@ -31,7 +31,11 @@ const getProducts = asyncHandler(async (req, res) => {
 //GET product by ID
 // GET /api/products/:id
 const getProductById = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findByIdAndUpdate(
+    req.params.id,
+    { $inc: { numViews: 1 } },
+    { new: true }
+  );
   if (product) {
     res.json(product);
   } else {
@@ -69,6 +73,7 @@ const createProduct = asyncHandler(async (req, res) => {
     countInStock: 0,
     numReviews: 0,
     description: "sample description",
+    sold: 0,
   });
   const createdProduct = await product.save();
   res.status(201).json(createdProduct);
@@ -88,6 +93,7 @@ const importProduct = asyncHandler(async (req, res) => {
       countInStock: row.countInStock,
       numReviews: row.numReviews,
       description: row.description,
+      sold: 0,
     });
     console.log(product);
     const createdProduct = await product.save();
@@ -99,7 +105,8 @@ const importProduct = asyncHandler(async (req, res) => {
 //PUT update product
 //PUT /api/products/:id
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, price, description, image, category, countInStock } = req.body;
+  const { name, price, description, image, category, countInStock, sold } =
+    req.body;
   const product = await Product.findById(req.params.id);
   if (product) {
     product.name = name;
@@ -108,6 +115,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.image = image;
     product.category = category;
     product.countInStock = countInStock;
+    // product.sold = sold;
 
     const updatedProduct = await product.save();
     res.status(201).json(updatedProduct);
@@ -159,7 +167,7 @@ const createProductReview = asyncHandler(async (req, res) => {
 const getTopProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({})
     .sort({
-      rating: -1,
+      numViews: -1,
     })
     .limit(5);
 
